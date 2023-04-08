@@ -7,7 +7,7 @@ public class Calculadora {
         Calculos calc = new Calculos();
 
         int simbolo;
-        double num1, num2;
+        double num1;
         int sair = 0;
 
         do {
