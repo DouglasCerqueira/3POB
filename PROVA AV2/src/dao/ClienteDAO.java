@@ -4,6 +4,9 @@ import conexao.Conexao;
 import main.Cliente;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClienteDAO {
     private Conexao conexao;
@@ -37,6 +40,7 @@ public class ClienteDAO {
 
     public void alterar(Cliente cliente){
         String sql = "UPDATE cliente SET nome=?, endereco=?, postalCode=?, pais=?, cpf=?, passaporte=?, email=?, dataNascimento=? WHERE id=?";
+
         try{
             PreparedStatement stmt = this.connect.prepareStatement(sql);
             stmt.setString(1, cliente.getNome());
@@ -57,6 +61,7 @@ public class ClienteDAO {
 
     public void excluir(int id){
         String sql = "DELETE FROM cliente WHERE id=?";
+
         try{
             PreparedStatement stmt = this.connect.prepareStatement(sql);
             stmt.setInt(1, id);
@@ -64,6 +69,33 @@ public class ClienteDAO {
 
         } catch (Exception e){
             System.out.println("Erro ao excluir cliente. " + e.getMessage());
+        }
+    }
+
+    public List<Cliente> getClientes(){
+        String sql = "SELECT * FROM cliente";
+
+        try{
+            PreparedStatement stmt = this.connect.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            List<Cliente> listaClientes = new ArrayList<Cliente>();
+            while(rs.next()){
+                Cliente cliente = new Cliente();
+                cliente.setId(rs.getInt("id"));
+                cliente.setNome(rs.getString("nome"));
+                cliente.setEndereco(rs.getString("endereco"));
+                cliente.setPostalCode(rs.getString("postalCode"));
+                cliente.setPais(rs.getString("pais"));
+                cliente.setCpf(rs.getString("cpf"));
+                cliente.setPassaporte(rs.getString("passaporte"));
+                cliente.setEmail(rs.getString("email"));
+                cliente.setDataNascimento(rs.getString("dataNascimento"));
+                listaClientes.add(cliente);
+            }
+            return listaClientes;
+
+        }catch (Exception e){
+            return null;
         }
     }
 }
