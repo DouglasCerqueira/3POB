@@ -1,1 +1,0 @@
-Pasta para colocar os exercicios da oracle academy
